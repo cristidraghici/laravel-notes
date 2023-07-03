@@ -26,6 +26,13 @@ export default function Note({ note }) {
         });
     };
 
+    const cancel = (e) => {
+        e.preventDefault();
+        setEditing(false);
+        reset();
+        clearErrors();
+    };
+
     return (
         <div className="p-6 flex space-x-2">
             <svg
@@ -99,14 +106,7 @@ export default function Note({ note }) {
                         <InputError message={errors.message} className="mt-2" />
                         <div className="space-x-2">
                             <PrimaryButton className="mt-4">Save</PrimaryButton>
-                            <button
-                                className="mt-4"
-                                onClick={() => {
-                                    setEditing(false);
-                                    reset();
-                                    clearErrors();
-                                }}
-                            >
+                            <button className="mt-4" onClick={cancel}>
                                 Cancel
                             </button>
                         </div>
