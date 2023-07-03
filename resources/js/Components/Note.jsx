@@ -78,6 +78,13 @@ export default function Note({ note }) {
                                 >
                                     Edit
                                 </button>
+                                <Dropdown.Link
+                                    as="button"
+                                    href={route("notes.destroy", note.id)}
+                                    method="delete"
+                                >
+                                    Delete
+                                </Dropdown.Link>
                             </Dropdown.Content>
                         </Dropdown>
                     )}

@@ -79,8 +79,12 @@ class NoteController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Note $note)
+    public function destroy(Note $note): RedirectResponse
     {
-        //
+        $this->authorize('delete', $note);
+
+        $note->delete();
+
+        return redirect(route('notes.index'));
     }
 }
