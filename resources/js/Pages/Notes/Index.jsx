@@ -1,10 +1,11 @@
 import React from "react";
+import { useForm, Head } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
-import { useForm, Head } from "@inertiajs/react";
+import Note from "@/Components/Note";
 
-export default function Index({ auth }) {
+export default function Index({ auth, notes }) {
     const { data, setData, post, processing, reset, errors } = useForm({
         message: "",
     });
@@ -31,6 +32,12 @@ export default function Index({ auth }) {
                         Add
                     </PrimaryButton>
                 </form>
+
+                <div className="mt-6 bg-white shadow-sm rounded-lg divide-y">
+                    {notes.map((note) => (
+                        <Note key={note.id} note={note} />
+                    ))}
+                </div>
             </div>
         </AuthenticatedLayout>
     );

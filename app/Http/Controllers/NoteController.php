@@ -17,7 +17,7 @@ class NoteController extends Controller
     public function index(): Response
     {
         return Inertia::render('Notes/Index', [
-            //
+            'notes' => Note::with('user:id,name')->latest()->get(),
         ]);
     }
 
