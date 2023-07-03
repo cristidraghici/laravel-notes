@@ -63,9 +63,17 @@ class NoteController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Note $note)
+    public function update(Request $request, Note $note): RedirectResponse
     {
-        //
+        $this->authorize('update', $note);
+
+        $validated = $request->validate([
+            'message' => 'required|string|max:255',
+        ]);
+
+        $note->update($validated);
+
+        return redirect(route('notes.index'));
     }
 
     /**
