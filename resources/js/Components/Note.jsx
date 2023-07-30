@@ -10,7 +10,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 
 dayjs.extend(relativeTime);
 
-export default function Note({ note }) {
+export default function Note({ note, className }) {
     const { auth } = usePage().props;
 
     const [editing, setEditing] = useState(false);
@@ -34,36 +34,11 @@ export default function Note({ note }) {
     };
 
     return (
-        <div className="p-6 flex space-x-2">
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 text-gray-600 -scale-x-100"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2"
-            >
-                <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                />
-            </svg>
+        <div
+            className={`${className} p-6 flex space-x-2 bg-white shadow-sm rounded-lg relative`}
+        >
             <div className="flex-1">
-                <div className="flex justify-between items-center">
-                    <div>
-                        <span className="text-gray-800">{note.user.name}</span>
-                        <small className="ml-2 text-sm text-gray-600">
-                            {dayjs(note.created_at).fromNow()}
-                        </small>
-                        {note.created_at !== note.updated_at && (
-                            <small className="text-sm text-gray-600">
-                                {" "}
-                                &middot; edited{" "}
-                                {dayjs(note.updated_at).fromNow()}
-                            </small>
-                        )}
-                    </div>
+                <div className="flex justify-between items-center absolute top-2 right-2">
                     {note.user.id === auth.user.id && (
                         <Dropdown>
                             <Dropdown.Trigger>
@@ -97,11 +72,11 @@ export default function Note({ note }) {
                     )}
                 </div>
                 {editing ? (
-                    <form onSubmit={submit}>
+                    <form onSubmit={submit} className="pt-2">
                         <textarea
                             value={data.message}
                             onChange={(e) => setData("message", e.target.value)}
-                            className="mt-4 w-full text-gray-900 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
+                            className="mb-4 w-full text-gray-900 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
                         ></textarea>
                         <InputError message={errors.message} className="mt-2" />
                         <div className="space-x-2">
@@ -112,8 +87,23 @@ export default function Note({ note }) {
                         </div>
                     </form>
                 ) : (
-                    <p className="mt-4 text-lg text-gray-900">{note.message}</p>
+                    <p className="mb-4 pt-2 text-lg text-gray-900">
+                        {note.message}
+                    </p>
                 )}
+                <div className="text-right absolute bottom-1 right-2">
+                    <small className="ml-2 text-sm text-gray-600">
+                        {dayjs(note.created_at).fromNow()}
+                    </small>
+                    {note.created_at !== note.updated_at && (
+                        <>
+                            <span className="pr-1 pl-1">&middot;</span>
+                            <small className="text-sm text-gray-600">
+                                edited {dayjs(note.updated_at).fromNow()}
+                            </small>
+                        </>
+                    )}
+                </div>
             </div>
         </div>
     );
